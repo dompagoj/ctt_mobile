@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ctt_mobile/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,10 +9,12 @@ import '../theme.dart';
 class DrawerItem {
   final String name;
   final IconData icon;
+  final String route;
 
   DrawerItem({
     this.name,
     this.icon,
+    this.route,
   });
 }
 
@@ -34,15 +37,17 @@ class MyDrawer extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             getHeader(),
-            ...getItems(),
+            ...getItems(context),
           ],
         ),
       ),
     );
   }
 
-  void onTap() {
-    debugPrint('Tapped!');
+  void onTap(String route, BuildContext context) {
+    if (route != null) {
+      Navigator.pushNamed(context, route);
+    }
   }
 
   DrawerHeader getHeader() => DrawerHeader(
@@ -71,13 +76,13 @@ class MyDrawer extends StatelessWidget {
         color: Colors.black12,
       ));
 
-  Iterable<Material> getItems() => items.map((item) => Material(
+  Iterable<Material> getItems(BuildContext context) => items.map((item) => Material(
         color: DARK_BLUE,
         child: InkWell(
           splashColor: Colors.white12,
           borderRadius: BorderRadius.circular(5),
           highlightColor: Colors.red,
-          onTap: onTap,
+          onTap: () => onTap(item.route, context),
           child: Container(
             height: 55,
             child: Padding(

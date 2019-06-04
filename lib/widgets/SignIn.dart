@@ -1,13 +1,13 @@
+import 'package:ctt_mobile/routes.dart';
+import 'package:ctt_mobile/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
-  @override
-  _State createState() => _State();
-}
 
-class _State extends State<SignIn> {
+class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: LoginForm(),
+    );
   }
 }
