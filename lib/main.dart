@@ -1,56 +1,17 @@
-import 'package:ctt_mobile/routes.dart';
-import 'package:ctt_mobile/widgets/SignIn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ctt_mobile/theme.dart';
-import 'package:ctt_mobile/widgets/drawer.dart';
+import 'package:ctt_mobile/app_config.dart';
+import 'package:ctt_mobile/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
 
-void main() => runApp(MyApp());
+import 'MyApp.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getToken(),
-        builder: (context, snapshot) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-                primaryColor: DARK_BLUE,
-                appBarTheme: AppBarTheme(
-                  color: DARK_BLUE,
-                )),
-            home: SignIn(),
-          );
-        });
-  }
+GetIt getIt = GetIt();
+const appConfig = AppConfig(apiUrl: 'http://192.168.1.5:8000');
 
-  getToken() async {
-    var prefs = await SharedPreferences.getInstance();
+void main() {
+  getIt.registerSingleton(AuthService(appConfig));
 
-    return prefs.getString('token');
-  }
+  runApp(MyApp());
 }
 
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text('Home screen'),
-      appBar: AppBar(
-        title: Text("Simple time table"),
-      ),
-      drawer: MyDrawer(
-        company: 'Coreline',
-        image: 'assets/icon.png',
-        items: [
-          DrawerItem(icon: Icons.face, name: 'Profile'),
-          DrawerItem(icon: Icons.date_range, name: 'Hours'),
-          DrawerItem(icon: Icons.dashboard, name: 'Dashboard'),
-          DrawerItem(icon: Icons.description, name: 'Projects'),
-        ],
-      ),
-    );
-  }
-}

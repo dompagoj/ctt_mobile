@@ -1,4 +1,4 @@
-import 'package:ctt_mobile/main.dart';
+import 'package:ctt_mobile/widgets/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
