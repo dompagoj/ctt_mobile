@@ -1,4 +1,5 @@
 import 'package:ctt_mobile/forms/signin_form.dart';
+import 'package:ctt_mobile/models/user.dart';
 import 'package:ctt_mobile/services/auth_service.dart';
 import 'package:ctt_mobile/theme.dart';
 import 'package:flutter/material.dart';
@@ -36,15 +37,14 @@ class _SignInState extends State<SignIn> {
                     SizedBox(height: 30),
                     Container(
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 20, right: 5, bottom: 20, left: 5),
-                        child: SignInForm(
-                          formKey: _formKey,
-                          autoValidate: _autoValidate,
-                          emailController: emailController,
-                          passwordController: passwordController,
-                        )
-                      ),
+                          padding: EdgeInsets.only(
+                              top: 20, right: 5, bottom: 20, left: 5),
+                          child: SignInForm(
+                            formKey: _formKey,
+                            autoValidate: _autoValidate,
+                            emailController: emailController,
+                            passwordController: passwordController,
+                          )),
                       decoration: BoxDecoration(
                         color: Colors.black45,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -62,6 +62,18 @@ class _SignInState extends State<SignIn> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       onPressed: () => onSubmit(context),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () => goToRegister(context),
+                        child: Text(
+                          'Have an invite token?',
+                          style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -85,15 +97,20 @@ class _SignInState extends State<SignIn> {
         _autoValidate = true;
       });
     }
-    var response =
-        await authService.login(email: emailController.text, password: passwordController.text);
+    var response = await authService.login(
+        email: emailController.text, password: passwordController.text);
 
     if (response == null) return showError(context);
     authService.token = response['token'];
-    authService.user = response['user'];
+    authService.user = User.fromJson(response['user']);
     var prefs = await SharedPreferences.getInstance();
     prefs.setString(('token'), response['token']);
-    Router.goToHome(context);
+    Router.goToProfile(context);
+  }
+
+  goToRegister(BuildContext context) {
+
+
   }
 
   @override

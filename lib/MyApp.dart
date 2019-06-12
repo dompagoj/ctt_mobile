@@ -1,6 +1,6 @@
 import 'package:ctt_mobile/services/auth_service.dart';
 import 'package:ctt_mobile/theme.dart';
-import 'package:ctt_mobile/widgets/home_screen.dart';
+import 'package:ctt_mobile/widgets/profile.dart';
 import 'package:ctt_mobile/widgets/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       );
 
     return snapshot.hasData
-        ? HomeScreen()
+        ? Profile()
         : SignIn();
   }
 
@@ -49,9 +49,9 @@ class MyApp extends StatelessWidget {
     try {
       authService.user = await authService.getMe();
     } catch (e) {
+      await prefs.remove('token');
       return null;
     }
-    print('token: $token');
 
     return token;
   }

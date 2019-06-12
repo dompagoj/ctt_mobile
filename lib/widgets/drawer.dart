@@ -9,12 +9,12 @@ import '../theme.dart';
 class DrawerItem {
   final String name;
   final IconData icon;
-  final String route;
+  final void Function(BuildContext context) action;
 
   DrawerItem({
     this.name,
     this.icon,
-    this.route,
+    this.action,
   });
 }
 
@@ -42,12 +42,6 @@ class MyDrawer extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void onTap(String route, BuildContext context) {
-    if (route != null) {
-      Navigator.pushNamed(context, route);
-    }
   }
 
   DrawerHeader getHeader() => DrawerHeader(
@@ -82,7 +76,7 @@ class MyDrawer extends StatelessWidget {
           splashColor: Colors.white12,
           borderRadius: BorderRadius.circular(5),
           highlightColor: Colors.red,
-          onTap: () => onTap(item.route, context),
+          onTap: () => item.action != null ? item.action(context) : {},
           child: Container(
             height: 55,
             child: Padding(
